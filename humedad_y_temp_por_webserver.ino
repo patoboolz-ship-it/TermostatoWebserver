@@ -8,6 +8,13 @@
 
 const char* ssid = "ESP32";
 const char* password = "Totoladrillo123";
+
+// IP fija solicitada
+IPAddress local_IP(192, 168, 1, 26);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress primaryDNS(8, 8, 8, 8);
+IPAddress secondaryDNS(8, 8, 4, 4);
 // ==========================================
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -69,6 +76,11 @@ void setup() {
 
   // --------- WIFI ----------
   WiFi.mode(WIFI_STA);
+
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("Error configurando IP fija");
+  }
+
   WiFi.begin(ssid, password);
 
   Serial.print("Conectando a WiFi");
@@ -95,5 +107,4 @@ void setup() {
 void loop() {
   server.handleClient();
 }
-
 
